@@ -107,7 +107,7 @@ public class DiameterAAServer extends NodeManager {
                     //TODO Sprawdzic to jesli nie ma z w slowniku
                     String pass = userToPasswordDict.get(userName);
                     if (pass == null) {
-                        System.out.println(log="nie ma takeigo uzytkownika");
+                        System.out.println(log="nie ma takiego uzytkownika");
 
                         PrintedStrings.stringsToPrint.add(log);
                     }
@@ -124,13 +124,13 @@ public class DiameterAAServer extends NodeManager {
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 byte[] chapResponseBytes = new AVP_OctetString(elements[2]).queryValue();
-                                printBytesAsString(chapResponseBytes, "oderane rozwiazanie ");
-                                log = getBytesAsString(chapResponseBytes, "oderane rozwiazanie ");
+                                printBytesAsString(chapResponseBytes, "odebrane rozwiazanie ");
+                                log = getBytesAsString(chapResponseBytes, "odebrane rozwiazanie ");
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 byte[] chapChallengeBytes = new AVP_OctetString(elements[3]).queryValue();
-                                printBytesAsString(chapChallengeBytes, "oderane zadanie ");
-                                log = getBytesAsString(chapResponseBytes, "oderane zadanie ");
+                                printBytesAsString(chapChallengeBytes, "odebrane zadanie ");
+                                log = getBytesAsString(chapResponseBytes, "odebrane zadanie ");
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 //sprawdzenie czy nie ma ataku przez odtwarzanie
