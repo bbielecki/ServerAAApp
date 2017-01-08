@@ -83,5 +83,9 @@
             <Image url="@cloud-hi.png" />
          </image>
       </ImageView>
+      <TextField fx:id="secretText" layoutX="635.0" layoutY="33.0" prefHeight="25.0" prefWidth="172.0" promptText="must be 16 characters long" />
+      <Label fx:id="secretLabel" layoutX="506.0" layoutY="33.0" prefHeight="25.0" prefWidth="104.0" text="Enter The Secret" />
+      <CheckBox fx:id="defaultSecretCheckBox" layoutX="703.0" layoutY="69.0" mnemonicParsing="false" onAction="#defaultSecretAction" prefHeight="17.0" prefWidth="104.0" text="default secret" />
+      <Label fx:id="infoLabel" layoutX="506.0" layoutY="69.0" prefHeight="25.0" prefWidth="130.0" textAlignment="CENTER" textFill="#eb3c3c" />
    </children>
 </AnchorPane>

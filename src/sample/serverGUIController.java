@@ -4,8 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.CubicCurve;
@@ -16,6 +15,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.awt.SystemColor.info;
 import static java.awt.SystemColor.text;
 import static sample.Main.PrintedStrings;
 
@@ -47,6 +47,11 @@ public class serverGUIController implements Initializable{
     @FXML CubicCurve leftBottomServerLine;
     @FXML CubicCurve rightBottomServerLine;
 
+    @FXML TextField secretText;
+    @FXML CheckBox defaultSecretCheckBox;
+    @FXML Label secretLabel;
+    @FXML Label infoLabel;
+
     public static boolean firstConnected;
     public static boolean secondConnected;
     public static boolean thirdConnected;
@@ -61,6 +66,8 @@ public class serverGUIController implements Initializable{
     public static boolean secondTextClear;
     public static boolean thirdTextClear;
     public static boolean fourthTextClear;
+
+    private boolean allowToStartServer;
 
     int counter = 0;
 
@@ -85,6 +92,7 @@ public class serverGUIController implements Initializable{
 
         textComp1.setVisible(false);
 
+        allowToStartServer = false;
     }
 
     public void printLogs(int n){
@@ -130,47 +138,67 @@ public class serverGUIController implements Initializable{
 
 
     public void startServerAction(ActionEvent event) {
-        ServerStarter.start();
-        startServerButton.setVisible(false);
-        serverImage.setEffect(null);
+        String secret = "";
+
+        if(secretText.getText().equals("")){
+            allowToStartServer = false;
+            infoLabel.setText("please enter the secret");
+        }
+        else {
+            allowToStartServer=true;
+            infoLabel.setVisible(false);
+            defaultSecretCheckBox.setVisible(false);
+            secretLabel.setVisible(false);
+            secretText.setVisible(false);
+            secret = secretText.getText();
+        }
+
+        if(allowToStartServer) {
+            ServerStarter.start(secret);
 
 
-        Runnable task = () -> {
+            startServerButton.setVisible(false);
+            serverImage.setEffect(null);
 
-            while (true) {
-                flagCoordinator();
-                if (textComp1.getText().equals("")) {
-                    printLogs(1);
+
+            Runnable task = () -> {
+
+                while (true) {
+                    flagCoordinator();
+                    if (textComp1.getText().equals("")) {
+                        printLogs(1);
+                    }
+                    if (textComp2.getText().equals("")) {
+                        printLogs(2);
+                    }
+                    if (textComp3.getText().equals("")) {
+                        printLogs(3);
+                    }
+                    if (textComp4.getText().equals("")) {
+                        printLogs(4);
+                    }
+
+                    try {
+                        Thread.sleep(100);
+                        counter++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (counter >= 60) {
+                        firstConnected = false;
+                        secondConnected = false;
+                        thirdConnected = false;
+                        fourthCOnnected = false;
+                        counter = 0;
+                    }
+
                 }
-                if (textComp2.getText().equals("")) {
-                    printLogs(2);
-                }
-                if (textComp3.getText().equals("")) {
-                    printLogs(3);
-                }
-                if (textComp4.getText().equals("")) {
-                    printLogs(4);
-                }
-
-                        try {
-                            Thread.sleep(100);
-                            counter++;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        if(counter>=60) {
-                    firstConnected=false;
-                    secondConnected=false;
-                    thirdConnected=false;
-                    fourthCOnnected=false;
-                            counter=0;
-                }
-
-            }
-        };
-        Thread t = new Thread(task);
-        t.start();
+            };
+            Thread t = new Thread(task);
+            t.start();
+            allowToStartServer = false;
+        }
     }
 
     public void flagCoordinator(){
@@ -226,5 +254,14 @@ public class serverGUIController implements Initializable{
             textComp4.clear();
 
 
+    }
+
+    public void defaultSecretAction(){
+        if(defaultSecretCheckBox.isSelected()){
+            secretText.setText("czescczescczesc1");
+        }
+        else {
+            secretText.clear();
+        }
     }
 }

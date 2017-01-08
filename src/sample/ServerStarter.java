@@ -14,7 +14,7 @@ public class ServerStarter {
 
     }
 
-    public static void start(){
+    public static void start(String secret){
         Thread t =new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,8 +33,8 @@ public class ServerStarter {
 
                 DiameterServer ds = new DiameterServer();
                 DiameterAAServer aaServer = ds.addAAServer(host_id,realm,port);
-                aaServer.addUser("user@janusz.pl", "aaa","czescczescczesc1");
-                aaServer.addUser("user@example.pl", "aaa", "czescczescczesc1");
+                aaServer.addUser("user@janusz.pl", "aaa",secret);
+                aaServer.addUser("user@example.pl", "aaa", secret);
                 aaServer.setClusterAddress("224.0.0.1");
 
                 System.out.println("Hit enter to terminate server");
