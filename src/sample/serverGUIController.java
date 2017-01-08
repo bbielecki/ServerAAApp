@@ -152,8 +152,6 @@ public class serverGUIController implements Initializable{
                     printLogs(4);
                 }
 
-                //TODO reszta klientow
-
                         try {
                             Thread.sleep(100);
                             counter++;
@@ -215,7 +213,7 @@ public class serverGUIController implements Initializable{
             bottomLeftCompLine.setVisible(true);
         if(thirdInClaster)
             bottomRightCompLine.setVisible(true);
-        if(fourthTextClear)
+        if(fourthInClaster)
             rightCompLine.setVisible(true);
 
         if(firstTextClear)
