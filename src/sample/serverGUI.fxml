@@ -62,7 +62,7 @@
             <BoxBlur />
          </effect>
       </CubicCurve>
-      <TextArea fx:id="textComp1" editable="false" layoutX="14.0" layoutY="68.0" prefHeight="176.0" prefWidth="206.0" visible="false" AnchorPane.bottomAnchor="406.0" AnchorPane.leftAnchor="14.0" />
+      <TextArea fx:id="textComp1" editable="false" layoutX="26.0" layoutY="113.0" prefHeight="176.0" prefWidth="206.0" visible="false" AnchorPane.bottomAnchor="361.0" AnchorPane.leftAnchor="26.0" />
       <TextArea fx:id="textComp3" editable="false" layoutX="635.0" layoutY="441.0" prefHeight="176.0" prefWidth="200.0" visible="false" />
       <TextArea fx:id="textComp2" editable="false" layoutX="14.0" layoutY="459.0" prefHeight="176.0" prefWidth="200.0" visible="false" />
       <Button fx:id="startServerButton" layoutX="346.0" layoutY="58.0" mnemonicParsing="false" onAction="#startServerAction" prefHeight="40.0" prefWidth="88.0" text="Start Server" textAlignment="CENTER" textFill="#410dd1">
@@ -77,7 +77,7 @@
             </Lighting>
          </effect>
       </Button>
-      <TextArea fx:id="textComp4" editable="false" layoutX="686.0" layoutY="58.0" prefHeight="176.0" prefWidth="200.0" visible="false" />
+      <TextArea fx:id="textComp4" editable="false" layoutX="676.0" layoutY="113.0" prefHeight="176.0" prefWidth="200.0" visible="false" />
       <ImageView fitHeight="91.0" fitWidth="130.0" layoutX="332.0" layoutY="244.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@cloud-hi.png" />

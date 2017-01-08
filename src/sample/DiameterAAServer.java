@@ -200,7 +200,7 @@ public class DiameterAAServer extends NodeManager {
                             if(lastId==36)
                                 serverGUIController.thirdInClaster = true;
                             if(lastId==37)
-                                serverGUIController.fourthCOnnected = true;
+                                serverGUIController.fourthInClaster = true;
                         }
                     } else {
                         answer.add(new AVP_Unsigned32(ProtocolConstants.DI_RESULT_CODE, ProtocolConstants.DIAMETER_RESULT_AUTHENTICATION_REJECTED));
