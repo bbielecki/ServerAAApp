@@ -22,7 +22,7 @@ import static sample.Main.PrintedStrings;
 /**
  * Created by Bartłomiej on 04.01.2017.
  */
-public class serverGUIController implements Initializable, PrintCallBack{
+public class serverGUIController implements Initializable{
 
     @FXML ImageView leftComp;
     @FXML ImageView rightComp;
@@ -33,6 +33,7 @@ public class serverGUIController implements Initializable, PrintCallBack{
     @FXML TextArea textComp1;
     @FXML TextArea textComp2;
     @FXML TextArea textComp3;
+    @FXML TextArea textComp4;
 
     @FXML Button startServerButton;
 
@@ -56,12 +57,21 @@ public class serverGUIController implements Initializable, PrintCallBack{
     public static boolean thirdInClaster;
     public static boolean fourthInClaster;
 
+    public static boolean firstTextClear;
+    public static boolean secondTextClear;
+    public static boolean thirdTextClear;
+    public static boolean fourthTextClear;
+
+    int counter = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //leftComp.setImage(new Image("file:/C:/Users/Bartłomiej/IdeaProjects/ServerAAApp/desktop-computer-keyboard-mouse.p"));
 
         leftComp.setVisible(false);
+        rightComp.setVisible(false);
+        bottomLeftComp.setVisible(false);
+        bottomRightComp.setVisible(false);
 
         leftServerLine.setVisible(false);
         rightBottomServerLine.setVisible(false);
@@ -74,9 +84,10 @@ public class serverGUIController implements Initializable, PrintCallBack{
         leftCompLine.setVisible(false);
 
         textComp1.setVisible(false);
+
     }
 
-    public void printLogs(){
+    public void printLogs(int n){
         synchronized (PrintedStrings.stringsToPrint){
             String text = "";
             if(!PrintedStrings.stringsToPrint.isEmpty()) {
@@ -84,32 +95,81 @@ public class serverGUIController implements Initializable, PrintCallBack{
                     text = text + str + "\n";
                 }
             }
-            textComp1.setText(text);
 
-            firstConnected = false; //TODO obsluz wszystkich;
+
+            switch (n) {
+                case 1: {
+                    textComp1.setText(text);
+                    //firstConnected = false;
+                    firstTextClear = false;
+                    break;
+                }
+                case 2:{
+                    textComp2.setText(text);
+                    //secondConnected = false;
+                    secondTextClear = false;
+                    break;
+                }
+                case 3:{
+                    textComp3.setText(text);
+                    //thirdConnected = false;
+                    thirdTextClear = false;
+                    break;
+                }
+                case 4:{
+                    textComp4.setText(text);
+                    //fourthCOnnected = false;
+                    fourthTextClear = false;
+                    break;
+                }
+            }
+
+            PrintedStrings.stringsToPrint.clear();
         }
     }
 
 
-    public void startServerAction(ActionEvent event){
+    public void startServerAction(ActionEvent event) {
         ServerStarter.start();
         startServerButton.setVisible(false);
         serverImage.setEffect(null);
 
-        Runnable task = () ->{
 
-                do {
-                    flagCoordinator();
-                    if(textComp1.getText().equals(""))
-                        printLogs();
+        Runnable task = () -> {
 
-                    //TODO reszta klientow
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }while(true);
+            while (true) {
+                flagCoordinator();
+                if (textComp1.getText().equals("")) {
+                    printLogs(1);
+                }
+                if (textComp2.getText().equals("")) {
+                    printLogs(2);
+                }
+                if (textComp3.getText().equals("")) {
+                    printLogs(3);
+                }
+                if (textComp4.getText().equals("")) {
+                    printLogs(4);
+                }
+
+                //TODO reszta klientow
+
+                        try {
+                            Thread.sleep(100);
+                            counter++;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(counter>=60) {
+                    firstConnected=false;
+                    secondConnected=false;
+                    thirdConnected=false;
+                    fourthCOnnected=false;
+                            counter=0;
+                }
+
+            }
         };
         Thread t = new Thread(task);
         t.start();
@@ -121,9 +181,52 @@ public class serverGUIController implements Initializable, PrintCallBack{
             leftServerLine.setVisible(true);
             textComp1.setVisible(true);
         }
-
-        if(firstInClaster){
-            leftCompLine.setVisible(true);
+        else{
+            leftServerLine.setVisible(false);
         }
+        if(secondConnected){
+            bottomLeftComp.setVisible(true);
+            leftBottomServerLine.setVisible(true);
+            textComp2.setVisible(true);
+        }
+        else {
+            leftBottomServerLine.setVisible(false);
+        }
+        if(thirdConnected){
+            bottomRightComp.setVisible(true);
+            rightBottomServerLine.setVisible(true);
+            textComp3.setVisible(true);
+        }
+        else {
+            rightBottomServerLine.setVisible(false);
+        }
+        if(fourthCOnnected){
+            rightComp.setVisible(true);
+            rightServerLine.setVisible(true);
+            textComp4.setVisible(true);
+        }
+        else {
+            rightServerLine.setVisible(false);
+        }
+
+        if(firstInClaster)
+            leftCompLine.setVisible(true);
+        if(secondInClaster)
+            bottomLeftCompLine.setVisible(true);
+        if(thirdInClaster)
+            bottomRightCompLine.setVisible(true);
+        if(fourthTextClear)
+            rightCompLine.setVisible(true);
+
+        if(firstTextClear)
+            textComp1.clear();
+        if(secondTextClear)
+            textComp2.clear();
+        if(thirdTextClear)
+            textComp3.clear();
+        if(fourthTextClear)
+            textComp4.clear();
+
+
     }
 }

@@ -48,7 +48,6 @@ public class DiameterAAServer extends NodeManager {
 
     protected void handleRequest(dk.i1.diameter.Message request, ConnectionKey connkey, Peer peer) {
         //this is not the way to do it, but fine for a lean-and-mean test server
-        serverGUIController.firstConnected = true;
 
         String log = "";
         Message answer = new Message();
@@ -125,13 +124,13 @@ public class DiameterAAServer extends NodeManager {
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 byte[] chapResponseBytes = new AVP_OctetString(elements[2]).queryValue();
-                                printBytesAsString(chapResponseBytes, "odertane rozwiazanie ");
-                                log = "odebrane rozwiazanie " + chapResponseBytes.toString();
+                                printBytesAsString(chapResponseBytes, "oderane rozwiazanie ");
+                                log = getBytesAsString(chapResponseBytes, "oderane rozwiazanie ");
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 byte[] chapChallengeBytes = new AVP_OctetString(elements[3]).queryValue();
-                                printBytesAsString(chapChallengeBytes, "odertane zadanie ");
-                                log = "odebrane zadanie " + chapResponseBytes.toString();
+                                printBytesAsString(chapChallengeBytes, "oderane zadanie ");
+                                log = getBytesAsString(chapResponseBytes, "oderane zadanie ");
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 //sprawdzenie czy nie ma ataku przez odtwarzanie
@@ -155,7 +154,7 @@ public class DiameterAAServer extends NodeManager {
                                 curentlyServicing.remove(userName);
                                 byte[] md5 = caluculateMD5(idBytes, userToSecretDict.get(userName).getBytes("ASCII"), chapChallengeBytes);
                                 printBytesAsString(chapResponseBytes, "obliczone rozwiazanie ");
-                                log = "obliczone rozwiazanie " + chapResponseBytes.toString();
+                                log = getBytesAsString(chapResponseBytes, "obliczone rozwiazanie ");
                                 PrintedStrings.stringsToPrint.add(log);
 
                                 if (Arrays.equals(chapResponseBytes, md5)) {
@@ -182,7 +181,7 @@ public class DiameterAAServer extends NodeManager {
                             byte[] ind = new byte[]{(byte) lastId};
                             byte[] challenge = generateChallenge();
                             printBytesAsString(challenge, "wygenerowane zadanie ");
-                            log = "wygenerowane zadanie " + challenge.toString();
+                            log = getBytesAsString(challenge, "wygenerowane zadanie ");
                             PrintedStrings.stringsToPrint.add(log);
 
 
@@ -194,7 +193,14 @@ public class DiameterAAServer extends NodeManager {
                                     new AVP_OctetString(ProtocolConstants.DI_CHAP_CHALLENGE, challenge)));
 
 
-                            serverGUIController.firstInClaster = true; //TODO obsluz wszsytkich
+                            if(lastId==34)
+                                serverGUIController.firstInClaster = true; //TODO obsluz wszsytkich
+                            if(lastId==35)
+                                serverGUIController.secondInClaster = true;
+                            if(lastId==36)
+                                serverGUIController.thirdInClaster = true;
+                            if(lastId==37)
+                                serverGUIController.fourthCOnnected = true;
                         }
                     } else {
                         answer.add(new AVP_Unsigned32(ProtocolConstants.DI_RESULT_CODE, ProtocolConstants.DIAMETER_RESULT_AUTHENTICATION_REJECTED));
@@ -211,6 +217,30 @@ public class DiameterAAServer extends NodeManager {
         try {
             answer(answer, connkey);
         } catch (dk.i1.diameter.node.NotAnAnswerException ex) {
+        }
+
+        switch (lastId) {
+            case 34: {
+                serverGUIController.firstConnected = true;
+                serverGUIController.firstTextClear = true;
+                break;
+            }
+            case 35:{
+                serverGUIController.secondConnected = true;
+                serverGUIController.secondTextClear = true;
+                break;
+            }
+            case 36:{
+                serverGUIController.thirdConnected = true;
+                serverGUIController.thirdTextClear = true;
+                break;
+            }
+            case 37:{
+                serverGUIController.fourthCOnnected = true;
+                serverGUIController.fourthTextClear = true;
+                break;
+            }
+
         }
 
     }
@@ -263,7 +293,7 @@ public class DiameterAAServer extends NodeManager {
         byte[] word = concatenateBytes(
                 concatenateBytes(id,secret), chellange);
         printBytesAsString(word, "licze md5 dla ");
-        log = "licze MD5 dla " + word;
+        log = getBytesAsString(word, "licze md5 dla ");
         PrintedStrings.stringsToPrint.add(log);
 
         try {
@@ -281,10 +311,19 @@ public class DiameterAAServer extends NodeManager {
         char[] charChallange2 = new char[bytes.length];
         for( int i = 0; i < bytes.length; i++) {
             charChallange2[i] = (char) bytes[i];
-
         }
         System.out.println(text + String.valueOf(charChallange2));
     }
+
+    String getBytesAsString(byte[] bytes, String text)  {
+        char[] charChallange2 = new char[bytes.length];
+        for( int i = 0; i < bytes.length; i++) {
+            charChallange2[i] = (char) bytes[i];
+        }
+
+        return text + String.valueOf(charChallange2);
+    }
+
     byte[] concatenateBytes(byte[] a, byte[] b) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
         try {

@@ -33,8 +33,8 @@ public class ServerStarter {
 
                 DiameterServer ds = new DiameterServer();
                 DiameterAAServer aaServer = ds.addAAServer(host_id,realm,port);
-                aaServer.addUser("user@janusz.pl", "aaa","assdasfffsaf");
-                aaServer.addUser("user@example.pl", "aaa", "assdasfffsaf");
+                aaServer.addUser("user@janusz.pl", "aaa","czescczescczesc1");
+                aaServer.addUser("user@example.pl", "aaa", "czescczescczesc1");
                 aaServer.setClusterAddress("224.0.0.1");
 
                 System.out.println("Hit enter to terminate server");

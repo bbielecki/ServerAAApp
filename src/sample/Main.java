@@ -30,7 +30,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //server.janusz.pl janusz.pl
-        PrintedStrings = new PrintedStrings();
+        PrintedStrings = new PrintedStrings(); //TODO mozliwosc podania secretu
         new ServerStarter(args);
 
         launch(args);
