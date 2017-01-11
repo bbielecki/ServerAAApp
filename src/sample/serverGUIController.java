@@ -68,6 +68,7 @@ public class serverGUIController implements Initializable{
     public static boolean fourthTextClear;
 
     private boolean allowToStartServer;
+    private int compCounter;
 
     int counter = 0;
 
@@ -93,6 +94,8 @@ public class serverGUIController implements Initializable{
         textComp1.setVisible(false);
 
         allowToStartServer = false;
+
+        compCounter = 0;
     }
 
     public void printLogs(int n){
@@ -156,10 +159,8 @@ public class serverGUIController implements Initializable{
         if(allowToStartServer) {
             ServerStarter.start(secret);
 
-
             startServerButton.setVisible(false);
             serverImage.setEffect(null);
-
 
             Runnable task = () -> {
 
@@ -167,6 +168,7 @@ public class serverGUIController implements Initializable{
                     flagCoordinator();
                     if (textComp1.getText().equals("")) {
                         printLogs(1);
+                        System.out.println("cos");
                     }
                     if (textComp2.getText().equals("")) {
                         printLogs(2);
