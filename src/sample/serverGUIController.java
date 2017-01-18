@@ -168,7 +168,7 @@ public class serverGUIController implements Initializable{
                     flagCoordinator();
                     if (textComp1.getText().equals("")) {
                         printLogs(1);
-                        System.out.println("cos");
+                        //System.out.println("cos");
                     }
                     if (textComp2.getText().equals("")) {
                         printLogs(2);

@@ -101,7 +101,9 @@ public class DiameterAAServer extends NodeManager {
 
 
                 synchronized (PrintedStrings.stringsToPrint) {
-                    System.out.println(log = "UserName: " + userName + " password: " + userPassword);
+                    System.out.println(log = "UserName: " + userName);
+                    PrintedStrings.stringsToPrint.add(log);
+                    System.out.println(log = "password: " + userPassword);
                     PrintedStrings.stringsToPrint.add(log);
 
                     //TODO Sprawdzic to jesli nie ma z w slowniku
